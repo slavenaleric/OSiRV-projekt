@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="hr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Audio vizualizator — Slaven Alerić</title>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/p5.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.9.2/addons/p5.sound.min.js"></script>
+
+  <style>
+    :root { --bg:#0b0b0f; --fg:#eaeaf1; --muted:#9aa0aa; --accent:#95caff; }
+    html,body{
+      margin:0; height:100%;
+      background:var(--bg); color:var(--fg);
+      font-family:system-ui, Segoe UI, Roboto, Ubuntu, Helvetica, Arial, sans-serif;
+    }
+    .topbar{
+      position:fixed; inset:0 0 auto 0;
+      display:flex; gap:14px; align-items:center; flex-wrap:wrap;
+      padding:10px 14px; background:rgba(16,16,24,.72); backdrop-filter: blur(8px);
+      border-bottom:1px solid rgba(255,255,255,.06); z-index:5;
+    }
+    .group{display:flex; align-items:center; gap:10px; flex-wrap:wrap}
+    .group label{font-size:13px; color:var(--muted)}
+    .btn{
+      appearance:none; border:1px solid rgba(255,255,255,.12);
+      background:#171923; color:var(--fg);
+      padding:7px 10px; border-radius:10px; cursor:pointer; font-size:14px;
+    }
+    .btn.playing{border-color:var(--accent); box-shadow:0 0 0 2px rgba(149,202,255,.18) inset}
+    .songButtons{display:flex; gap:8px; align-items:center; overflow:auto; max-width:40vw}
+    .nowplaying{
+      position:fixed; top:56px; left:0; right:0; text-align:center;
+      font-weight:700; letter-spacing:.5px; color:#fff;
+      text-shadow:0 1px 6px rgba(0,0,0,.55); z-index:4;
+    }
+    .canvasWrap{position:fixed; inset:56px 0 0 0}
+    .hint{position:absolute; inset:auto 0 18px 0; text-align:center; color:var(--muted); font-size:13px}
+    .file{font-size:13px}
+    .range{appearance:none; width:160px}
+  </style>
+</head>
+
+<body>
+  <div class="topbar">
+    <div class="group">
+      <button id="modeToggle" class="btn" title="Promijeni prikaz (V)">Bars</button>
+    </div>
+
+    <!-- Smoothing kontrola -->
+    <div class="group">
+      <label for="smoothSlider">Smoothing:</label>
+      <input id="smoothSlider" class="range" type="range" min="0" max="0.95" step="0.01" value="0.85" />
+      <span id="smoothVal" style="font-variant-numeric: tabular-nums;">0.85</span>
+    </div>
+
+    <div class="group">
+      <label>Pjesme:</label>
+      <div id="songButtons" class="songButtons">
+        <em style="color:var(--muted)">Učitaj .mp3 datoteke ili posluži /songs/ s lokalnog servera…</em>
+      </div>
+      <label class="file" for="filePicker">+ Dodaj .mp3</label>
+      <input id="filePicker" class="file" type="file" accept="audio/*" multiple />
+    </div>
+  </div>
+
+  <div class="nowplaying" id="nowPlaying">NOW PLAYING: —</div>
+  <div class="canvasWrap"><!-- p5 će ovdje postaviti canvas --></div>
+  <div class="hint">Tipka <b>Space</b>: Play/Pause · Tipka <b>V</b>: promjena prikaza</div>
+
+  <script src="script.js"></script>
+</body>
+</html>
